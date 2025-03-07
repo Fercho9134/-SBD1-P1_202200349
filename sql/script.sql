@@ -1,3 +1,30 @@
+-- Eliminamos todas las tablas si existen
+-- Eliminamos todas las tablas si existen
+DROP TABLE usuarios CASCADE CONSTRAINTS;
+DROP TABLE direcciones CASCADE CONSTRAINTS;
+DROP TABLE metodos_de_pago CASCADE CONSTRAINTS;
+DROP TABLE trabajadores CASCADE CONSTRAINTS;
+DROP TABLE puestos CASCADE CONSTRAINTS;
+DROP TABLE sedes CASCADE CONSTRAINTS;
+DROP TABLE departamentos CASCADE CONSTRAINTS;
+DROP TABLE productos CASCADE CONSTRAINTS;
+DROP TABLE categorias CASCADE CONSTRAINTS;
+DROP TABLE producto_categoria CASCADE CONSTRAINTS;
+DROP TABLE imagenes CASCADE CONSTRAINTS;
+DROP TABLE inventario_por_sede CASCADE CONSTRAINTS;
+DROP TABLE ordenes_de_compra CASCADE CONSTRAINTS;
+DROP TABLE productos_orden CASCADE CONSTRAINTS;
+DROP TABLE estados_pago CASCADE CONSTRAINTS;
+DROP TABLE pagos CASCADE CONSTRAINTS;
+DROP TABLE estado_envio CASCADE CONSTRAINTS;
+DROP TABLE empresa_transporte CASCADE CONSTRAINTS;
+DROP TABLE envios CASCADE CONSTRAINTS;
+DROP TABLE estado_devolucion CASCADE CONSTRAINTS;
+DROP TABLE devoluciones CASCADE CONSTRAINTS;
+DROP TABLE estado_traslados CASCADE CONSTRAINTS;
+DROP TABLE traslados CASCADE CONSTRAINTS;
+DROP TABLE productos_traslado CASCADE CONSTRAINTS;
+
 CREATE TABLE usuarios (
     id_usuario NUMBER PRIMARY KEY,
     cui NUMBER(10) UNIQUE NOT NULL,
@@ -30,6 +57,27 @@ CREATE TABLE metodos_de_pago (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
 );
 
+CREATE TABLE puestos (
+    id_puesto NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nombre VARCHAR2(100) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE sedes (
+    id_sede NUMBER PRIMARY KEY,
+    nombre VARCHAR2(100) UNIQUE NOT NULL,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
+CREATE TABLE departamentos (
+    id_departamento NUMBER PRIMARY KEY,
+    nombre VARCHAR2(100) UNIQUE NOT NULL,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
+);
+
 CREATE TABLE trabajadores (
     id_trabajador NUMBER PRIMARY KEY,
     cui NUMBER(10) UNIQUE NOT NULL,
@@ -46,27 +94,6 @@ CREATE TABLE trabajadores (
     FOREIGN KEY (id_puesto) REFERENCES puestos(id_puesto),
     FOREIGN KEY (id_sede) REFERENCES sedes(id_sede),
     FOREIGN KEY (id_departamento) REFERENCES departamentos(id_departamento)
-);
-
-CREATE TABLE puestos (
-    id_puesto NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    nombre VARCHAR2(100) UNIQUE NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE sedes (
-    id_sede NUMBER PRIMARY KEY,
-    nombre VARCHAR2(100) UNIQUE NOT NULL,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
-);
-
-CREATE TABLE departamentos (
-    id_departamento NUMBER PRIMARY KEY,
-    nombre VARCHAR2(100) UNIQUE NOT NULL,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
 );
 
 CREATE TABLE productos (
@@ -92,10 +119,10 @@ CREATE TABLE producto_categoria (
     id_producto NUMBER NOT NULL,
     id_categoria NUMBER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_producto, id_categoria),
     FOREIGN KEY (id_producto) REFERENCES productos(id_producto) ON DELETE CASCADE,
-    FOREIGN KEY (id_categoria) REFERENCES
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria) ON DELETE CASCADE
 );
 
 CREATE TABLE imagenes (
@@ -162,15 +189,15 @@ CREATE TABLE pagos (
 CREATE TABLE estado_envio (
     id_estado_envio NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nombre VARCHAR2(100) UNIQUE NOT NULL,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE empresa_transporte (
     id_empresa NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nombre VARCHAR2(100) UNIQUE NOT NULL,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE envios (
@@ -191,8 +218,8 @@ CREATE TABLE envios (
 CREATE TABLE estado_devolucion (
     id_estado_devolucion NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nombre VARCHAR2(100) UNIQUE NOT NULL,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE devoluciones (
@@ -210,8 +237,8 @@ CREATE TABLE devoluciones (
 CREATE TABLE estado_traslados(
     id_estado_traslado NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nombre VARCHAR2(100) UNIQUE NOT NULL,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE traslados (

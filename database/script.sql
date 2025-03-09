@@ -138,7 +138,7 @@ CREATE TABLE inventario_por_sede (
     id_inventario NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_producto NUMBER NOT NULL,
     id_sede NUMBER NOT NULL,
-    stock NUMBER NOT NULL CHECK (stock >= 0),
+    stock NUMBER CHECK (stock >= 0),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (id_producto) REFERENCES productos(id_producto),
@@ -286,6 +286,7 @@ BEGIN
 END;
 /
 
+
 BEGIN
     FOR rec IN (SELECT table_name
                 FROM all_tab_columns
@@ -301,3 +302,84 @@ BEGIN
     END LOOP;
 END;
 /
+
+
+-- Insertamos los datos fijos, como sede, departamentos, puestos, etc. !0 de cada uno
+INSERT INTO sedes (nombre) VALUES ('Sede Central');
+INSERT INTO sedes (nombre) VALUES ('Sede Zona 1');
+INSERT INTO sedes (nombre) VALUES ('Sede Zona 2');
+INSERT INTO sedes (nombre) VALUES ('Sede Zona 3');
+INSERT INTO sedes (nombre) VALUES ('Sede Zona 4');
+INSERT INTO sedes (nombre) VALUES ('Sede Zona 5');
+INSERT INTO sedes (nombre) VALUES ('Sede Zona 6');
+INSERT INTO sedes (nombre) VALUES ('Sede Zona 7');
+INSERT INTO sedes (nombre) VALUES ('Sede Zona 8');
+INSERT INTO sedes (nombre) VALUES ('Sede Zona 9');
+
+INSERT INTO departamentos (nombre) VALUES ('Departamento de Ventas');
+INSERT INTO departamentos (nombre) VALUES ('Departamento de Compras');
+INSERT INTO departamentos (nombre) VALUES ('Departamento de Recursos Humanos');
+INSERT INTO departamentos (nombre) VALUES ('Departamento de Logística');
+INSERT INTO departamentos (nombre) VALUES ('Departamento de Sistemas');
+INSERT INTO departamentos (nombre) VALUES ('Departamento de Contabilidad');
+INSERT INTO departamentos (nombre) VALUES ('Departamento de Marketing');
+INSERT INTO departamentos (nombre) VALUES ('Departamento de Atención al Cliente');
+INSERT INTO departamentos (nombre) VALUES ('Departamento de Almacén');
+INSERT INTO departamentos (nombre) VALUES ('Departamento de Producción');
+
+INSERT INTO puestos (nombre) VALUES ('Gerente');
+INSERT INTO puestos (nombre) VALUES ('Subgerente');
+INSERT INTO puestos (nombre) VALUES ('Jefe de Departamento');
+INSERT INTO puestos (nombre) VALUES ('Supervisor');
+INSERT INTO puestos (nombre) VALUES ('Encargado');
+INSERT INTO puestos (nombre) VALUES ('Asistente');
+INSERT INTO puestos (nombre) VALUES ('Empleado');
+INSERT INTO puestos (nombre) VALUES ('Practicante');
+INSERT INTO puestos (nombre) VALUES ('Consultor');
+INSERT INTO puestos (nombre) VALUES ('Analista');
+
+INSERT INTO estados_pago (nombre) VALUES ('Pendiente');
+INSERT INTO estados_pago (nombre) VALUES ('Pagado');
+INSERT INTO estados_pago (nombre) VALUES ('Cancelado');
+INSERT INTO estados_pago (nombre) VALUES ('Reembolsado');
+
+INSERT INTO estado_envio (nombre) VALUES ('En preparación');
+INSERT INTO estado_envio (nombre) VALUES ('Enviado');
+INSERT INTO estado_envio (nombre) VALUES ('Entregado');
+INSERT INTO estado_envio (nombre) VALUES ('Devuelto');
+
+INSERT INTO estado_devolucion (nombre) VALUES ('Solicitada');
+INSERT INTO estado_devolucion (nombre) VALUES ('En proceso');
+INSERT INTO estado_devolucion (nombre) VALUES ('Aceptada');
+INSERT INTO estado_devolucion (nombre) VALUES ('Rechazada');
+
+INSERT INTO estado_traslados (nombre) VALUES ('En proceso');
+INSERT INTO estado_traslados (nombre) VALUES ('En camino');
+INSERT INTO estado_traslados (nombre) VALUES ('Entregado');
+INSERT INTO estado_traslados (nombre) VALUES ('Cancelado');
+
+INSERT INTO categorias (nombre) VALUES ('Celulares');
+INSERT INTO categorias (nombre) VALUES ('Computadoras');
+INSERT INTO categorias (nombre) VALUES ('Electrodomésticos');
+INSERT INTO categorias (nombre) VALUES ('Ropa');
+INSERT INTO categorias (nombre) VALUES ('Zapatos');
+INSERT INTO categorias (nombre) VALUES ('Accesorios');
+INSERT INTO categorias (nombre) VALUES ('Juguetes');
+INSERT INTO categorias (nombre) VALUES ('Libros');
+INSERT INTO categorias (nombre) VALUES ('Herramientas');
+INSERT INTO categorias (nombre) VALUES ('Muebles');
+
+
+INSERT INTO empresa_transporte (nombre) VALUES ('Fedex');
+INSERT INTO empresa_transporte (nombre) VALUES ('DHL');
+INSERT INTO empresa_transporte (nombre) VALUES ('UPS');
+INSERT INTO empresa_transporte (nombre) VALUES ('Estafeta');
+INSERT INTO empresa_transporte (nombre) VALUES ('Redpack');
+INSERT INTO empresa_transporte (nombre) VALUES ('Paquetexpress');
+INSERT INTO empresa_transporte (nombre) VALUES ('Correos de México');
+INSERT INTO empresa_transporte (nombre) VALUES ('TNT');
+INSERT INTO empresa_transporte (nombre) VALUES ('Multipack');
+INSERT INTO empresa_transporte (nombre) VALUES ('Estrella Blanca');
+
+
+COMMIT;

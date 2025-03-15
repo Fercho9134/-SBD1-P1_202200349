@@ -16,3 +16,4 @@ def get_connection():
         # Si ocurre un error, imprimir y devolver None
         print(f"Ocurrió un error al conectar a Oracle: {str(e)}")
         return None
+

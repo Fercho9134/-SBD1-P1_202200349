@@ -322,6 +322,174 @@ def eliminar_usuario(id_usuario):
 
 
                
+def insertar_direccion(id_usuario, direccion):
+    if not direccion:
+        return {
+            "status": "failed",
+            "message": "No se enviaron datos para insertar"
+        }, 400  # Bad Request
+    
+    if "direccion" not in direccion:
+        return {
+            "status": "failed",
+            "message": "Falta el campo requerido: direccion"
+        }, 400
+    
+    try:
+        conn = get_connection()
+        if conn is None:
+            return {
+                "status": "failed",
+                "message": "No se pudo conectar a la base de datos"
+            }, 500  # Internal Server Error
+        
+        #Verificar que el usuario con id_usuario exista con get_user, si hay respuesta insertar direccion
+
+        
+
+        with conn.cursor() as cursor:
+
+            cursor.execute(queriesUsuario["get_user"], {"id_usuario": id_usuario})
+            if cursor.fetchone() is None:
+                return {
+                    "status": "failed",
+                    "message": f"Usuario con id {id_usuario} no encontrado"
+                }, 404
+
+            cursor.execute(queriesUsuario["insert_direccion"], {"id_usuario": id_usuario, "direccion": direccion["direccion"]})
+            conn.commit()
+
+    except Exception as e:
+        return {
+            "status": "failed",
+            "message": f"Ocurrió un error: {str(e)}"
+        }, 500
+    
+    finally:
+        conn.close()
+
+    return {
+        "status": "success",
+        "message": "Dirección insertada con éxito"
+    }, 201  # Created
+
+
+def insertar_metodo_pago(id_usuario, metodo_pago):
+    if not metodo_pago:
+        return {
+            "status": "failed",
+            "message": "No se enviaron datos para insertar"
+        }, 400  # Bad Request
+    
+    if "metodo_pago" not in metodo_pago:
+        return {
+            "status": "failed",
+            "message": "Falta el campo requerido: metodo_pago"
+        }, 400
+    
+    try:
+        conn = get_connection()
+        if conn is None:
+            return {
+                "status": "failed",
+                "message": "No se pudo conectar a la base de datos"
+            }, 500  # Internal Server Error
+        with conn.cursor() as cursor:
+
+            cursor.execute(queriesUsuario["get_user"], {"id_usuario": id_usuario})
+            if cursor.fetchone() is None:
+                return {
+                    "status": "failed",
+                    "message": f"Usuario con id {id_usuario} no encontrado"
+                }, 404
+
+            cursor.execute(queriesUsuario["insert_metodo_pago"], {"id_usuario": id_usuario, "metodo_pago": metodo_pago["metodo_pago"]})
+            conn.commit()
+
+    except Exception as e:
+        return {
+            "status": "failed",
+            "message": f"Ocurrió un error: {str(e)}"
+        }, 500
+    
+    finally:
+        conn.close()
+
+    return {
+        "status": "success",
+        "message": "Método de pago insertado con éxito"
+    }, 201  # Created
+
+def obtener_direcciones(id_usuario):
+    try:
+        conn = get_connection()
+        if conn is None:
+            return {
+                "status": "failed",
+                "message": "No se pudo conectar a la base de datos"
+            }, 500  # Internal Server Error
+        with conn.cursor() as cursor:
+
+
+            cursor.execute(queriesUsuario["get_direcciones"], {"id_usuario": id_usuario})
+            direcciones = cursor.fetchall()
+
+
+            if not direcciones:
+                return {
+                    "status": "failed",
+                    "message": "No se encontraron direcciones"
+                }, 404  # Not Found
+
+            direcciones = [{"id_direccion": direccion[0], "direccion": direccion[1]} for direccion in direcciones]
+
+            return {
+                "status": "success",
+                "direcciones": direcciones
+            }, 200  # OK
+
+    except Exception as e:
+        return {
+            "status": "failed",
+            "message": f"Ocurrió un error: {str(e)}"
+        }, 500  # Internal Server Error
+
+    finally:
+        conn.close()
+
+def obtener_metodos_pago(id_usuario):
+    try:
+        conn = get_connection()
+        if conn is None:
+            return {
+                "status": "failed",
+                "message": "No se pudo conectar a la base de datos"
+            }, 500  # Internal Server Error
+        with conn.cursor() as cursor:
+            cursor.execute(queriesUsuario["get_metodos_pago"], {"id_usuario": id_usuario})
+            metodos_pago = cursor.fetchall()
+
+            if not metodos_pago:
+                return {
+                    "status": "failed",
+                    "message": "No se encontraron métodos de pago"
+                }, 404  # Not Found
+
+            metodos_pago = [{"id_metodo_pago": metodo_pago[0], "metodo_pago": metodo_pago[1]} for metodo_pago in metodos_pago]
+
+            return {
+                "status": "success",
+                "metodos_pago": metodos_pago
+            }, 200  # OK
+
+    except Exception as e:
+        return {
+            "status": "failed",
+            "message": f"Ocurrió un error: {str(e)}"
+        }, 500  # Internal Server Error
+
+    finally:
+        conn.close()
 
 
 def hash_password(password):
